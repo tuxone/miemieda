@@ -1,0 +1,10 @@
+# Autodetect text files
+* text=auto
+
+# Force sh file use lf
+*.sh text eol=lf
+
+.gitattributes eol=lf
+Vagrantfile eol=lf
+
+*.php text eol=lf

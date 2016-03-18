@@ -1,0 +1,19 @@
+root = true
+
+[*]
+insert_final_newline = true
+indent_style = space
+charset = utf-8
+
+[*.{sh,js,php,css,scss}]
+end_of_line = lf
+charset = utf-8
+
+[*.{js,json,yml}]
+indent_size = 2
+
+[*.php]
+indent_size = 4
+
+[*.{md,markdown}]
+indent_size = 4
