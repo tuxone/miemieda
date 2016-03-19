@@ -7,6 +7,6 @@ print_green "Installing the latest stable Nginx"
 
 sudo add-apt-repository -y  ppa:nginx/stable
 sudo apt-get update
-sudo apt-get install -y --force-yes nginx
+sudo apt-get install -y nginx
 
 print_green "Nginx installed"
