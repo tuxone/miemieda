@@ -2,7 +2,7 @@
 
 source ./util.sh
 
-print_green "Installing MySQL without ppa"
+print_green "Installing MySQL"
 
 print_green "Set default mysql root password as vagrant"
 

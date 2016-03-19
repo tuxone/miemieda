@@ -11,6 +11,7 @@ Vagrant box for PHP projects
 - MySQL 5.5
 - PHP 5.6 `ppa:ondrej/php5-5.6`
 - Redis 3.07 `ppa:chris-lea/redis-server`
+- Phpmyadmin 4.04 
 
 ## Requirement
 

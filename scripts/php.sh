@@ -3,9 +3,11 @@
 source ./util.sh
 
 print_green "Installing PHP"
-echo "Adding ppa to use 5.6"
-sudo add-apt-repository -y  ppa:ondrej/php5-5.6
-sudo apt-get -y update
+
+# already in in ppa.sh
+#echo "Adding ppa to use 5.6"
+#sudo add-apt-repository -y  ppa:ondrej/php5-5.6
+#sudo apt-get -y update
 
 echo "Install php and extensions"
 sudo apt-get install -y php5-common php5-cli php5-fpm php5-mysql \
@@ -16,6 +18,7 @@ php5-redis php5-imagick php5-intl php5-xdebug php5-json
 echo "enable all the error report for develop"
 sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/fpm/php.ini
 sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/fpm/php.ini
+php -v
 
 print_green "PHP installed"
 
