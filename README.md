@@ -1,9 +1,6 @@
 # lnmp
 Vagrant box for PHP projects
 
-- `vagrant init at15/lnmp`
-- `vagrant up --provider virtualbox`
-
 ## Include
 
 - Ubuntu 14.04 LTS
@@ -11,7 +8,7 @@ Vagrant box for PHP projects
 - MySQL 5.5
 - PHP 5.6 `ppa:ondrej/php5-5.6`
 - Redis 3.07 `ppa:chris-lea/redis-server`
-- Phpmyadmin 4.04 
+- Phpmyadmin 4.04
 
 ## Requirement
 
@@ -19,3 +16,23 @@ Vagrant box for PHP projects
 need to update TODO: the issue for brew cask installed vbox)
 - Vagrant latest
 
+## Usage
+
+### Use the pre-built box
+
+- `vagrant init at15/lnmp`
+- `vagrant up --provider virtualbox`
+
+### Use this repo directly
+
+- `git clone git@github.com:at15/lnmp.git`
+- `cd lnmp`
+- `vagrant up` it will run the provision scripts
+
+## Acknowledgement
+
+- https://github.com/LukeXuan/atlas-centos7
+
+## License
+
+MIT
