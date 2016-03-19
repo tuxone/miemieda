@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
+source ./util.sh
+
 # https://gist.github.com/justindowning/5921369
-
-function print_green {
-  echo -e "\e[32m${1}\e[0m"
-}
-
 print_green 'Cleanup bash history'
 
 sudo su
