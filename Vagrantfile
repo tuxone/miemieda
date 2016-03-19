@@ -6,7 +6,7 @@ Vagrant.configure(2) do |config|
   # the base box is ubuntu 14.04 LTS
   config.vm.box = "ubuntu/trusty64"
 
-  # no need to update
+  # need to check update
   config.vm.box_check_update = true
 
   # forward guest 80 to host 8080
