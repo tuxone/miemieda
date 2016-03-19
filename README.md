@@ -7,10 +7,10 @@ Vagrant box for PHP projects
 ## Include
 
 - Ubuntu 14.04 LTS
-- Nginx 1.8
+- Nginx 1.8 `ppa:nginx/stable`
 - MySQL 5.5
-- PHP 5.6
-- Redis 2.8.4
+- PHP 5.6 `ppa:ondrej/php5-5.6`
+- Redis 3.07 `ppa:chris-lea/redis-server`
 
 ## Requirement
 
