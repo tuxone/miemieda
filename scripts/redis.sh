@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
-echo "Installing redis"
+source ./util.sh
+
+print_green "Installing redis"
+
 sudo apt-get install -y redis-server
+
+print_green "Redis installed"

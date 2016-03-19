@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-echo "install basic tools"
+source ./util.sh
+
+print_green "Install basic tools"
 sudo apt-get update
 
 # install the basic tools
