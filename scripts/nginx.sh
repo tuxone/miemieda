@@ -10,4 +10,7 @@ print_green "Installing the latest stable Nginx"
 #sudo apt-get update
 sudo apt-get install -y nginx
 
+echo "Copy nginx config file"
+sudo cp vagrant.lk.conf /etc/nginx/conf.d/
+
 print_green "Nginx installed"
