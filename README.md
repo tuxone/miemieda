@@ -1,5 +1,7 @@
 # lnmp
-Vagrant box for PHP projects
+Vagrant box for PHP projects, using PHP 7.0
+
+[Vagrant Cloud](https://atlas.hashicorp.com/at15/boxes/lnmp7)
 
 ## Include
 
@@ -20,13 +22,14 @@ need to update TODO: the issue for brew cask installed vbox)
 
 ### Use the pre-built box
 
-- `vagrant init at15/lnmp`
+- `vagrant init at15/lnmp7`
 - `vagrant up --provider virtualbox`
 
 ### Use this repo directly
 
 - `git clone git@github.com:at15/lnmp.git`
 - `cd lnmp`
+- `git checkout feature/php7`
 - `vagrant up` it will run the provision scripts
 
 ## Acknowledgement
