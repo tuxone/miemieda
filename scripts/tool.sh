@@ -5,6 +5,7 @@ source ./ppa.sh
 sudo apt-get update
 
 print_green "Install basic tools"
+
 # install the basic tools
 sudo apt-get install -y build-essential gcc make
 sudo apt-get install -y software-properties-common

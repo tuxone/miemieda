@@ -28,12 +28,12 @@ Vagrant.configure(2) do |config|
 
 
   config.vm.provision "shell", inline: <<-SHELL
-     cd /vagrant/scripts
-     ./tool.sh
-     ./nginx.sh
-     ./redis.sh
-     ./mysql.sh
-     ./php.sh
-     ./phpmyadmin.sh
+    #  cd /vagrant/scripts
+    #  ./tool.sh
+    #  ./nginx.sh
+    #  ./redis.sh
+    #  ./mysql.sh
+    #  ./php.sh
+    #  ./phpmyadmin.sh
   SHELL
 end
