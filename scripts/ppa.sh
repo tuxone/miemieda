@@ -7,7 +7,6 @@ echo "Use Nginx 1.8"
 sudo add-apt-repository -y  ppa:nginx/stable
 
 echo "Use PHP 7"
-LC_ALL=C.UTF-8
 sudo add-apt-repository -y  ppa:ondrej/php
 
 echo "Use Redis 3.x"
