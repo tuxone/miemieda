@@ -3,6 +3,11 @@
 source ./util.sh
 
 # https://gist.github.com/justindowning/5921369
+print_green 'Clean apt'
+ 
+sudo apt-get -y autoremove
+sudo apt-get -y clean
+ 
 print_green 'Cleanup bash history'
 
 sudo unset /root/.bash_history
