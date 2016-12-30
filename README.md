@@ -1,4 +1,8 @@
 # lnmp
+
+NOTE: Deprecated, This branch use Ubuntu 14.04 with PHP5 and is no longer maintained,
+see [this issue](https://github.com/at15/lnmp/issues/12) for detail.
+
 Vagrant box for PHP projects
 
 For PHP7.0 see [feature/php7](https://github.com/at15/lnmp/tree/feature/php7) branch.
