@@ -1,0 +1,74 @@
+- hosts: all
+  become: true
+  vars:
+    mysql_root_pass: vagrant
+  tasks:
+  - name: Update repository
+    apt:
+      update_cache: yes
+  - name: Update all packages to the latest version
+    apt:
+      upgrade: dist
+  - name: Install essential tools
+    apt: name={{ item }} state=present
+    with_items:
+      - git
+      - vim
+      - curl
+      - wget
+      - build-essential
+      - gcc
+      - make
+
+  # Start of PPA
+  # Add nginx stable repository from PPA and install its signing key.
+  - name: Add nginx PPA
+    apt_repository:
+      repo: 'ppa:nginx/stable'
+  - name: Add redis PPA
+    apt_repository:
+      repo: 'ppa:chris-lea/redis-server'
+  - name: Add PHP PPA
+    apt_repository:
+      repo: 'ppa:ondrej/php'
+  # End of PPA
+
+  # Start of Installation
+  - name: Install nginx
+    apt:
+      name: nginx
+  - name: Install redis
+    apt:
+      name: redis-server
+  # NOTE: the password problem
+  # https://coderwall.com/p/sqdaya/mysql-server-installation-with-custom-password-in-ansible--2
+  - name: Set MySQL root password before installing
+    debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_root_pass | quote}}' vtype='password'
+  - name: Confirm MySQL root password before installing
+    debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_pass | quote}}' vtype='password'
+  - name: Install MySQL
+    apt: name={{ item }} state=present
+    with_items:
+      - mysql-server
+      - mysql-client
+  - name: Install PHP7
+    apt: name={{ item }} state=present
+    # NOTE: need to specify php 7.1
+    # NOTE: cli and other packages are installed as dependencies
+    with_items:
+      - php7.1-fpm
+      - php7.1-mcrypt
+      - php7.1-zip
+      - php7.1-redis
+      - php7.1-xdebug
+      - php7.1-curl
+      - php7.1-gd
+      - php7.1-intl
+      - php7.1-mysql
+      - php7.1-sqlite3
+  # End of Installation
+
+  # tasks:
+  # - name: run this command and ignore the result
+  #   shell: /usr/bin/somecommand
+  #   ignore_errors: True

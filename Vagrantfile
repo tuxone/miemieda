@@ -3,8 +3,8 @@
 
 Vagrant.configure(2) do |config|
 
-  # the base box is ubuntu 14.04 LTS
-  config.vm.box = "ubuntu/trusty64"
+  # the base box is ubuntu 16.04 LTS
+	config.vm.box = "bento/ubuntu-16.04"
 
   # need to check update
   config.vm.box_check_update = true
@@ -27,13 +27,8 @@ Vagrant.configure(2) do |config|
   end
 
 
-  config.vm.provision "shell", inline: <<-SHELL
-     cd /vagrant/scripts
-     ./tool.sh
-     ./nginx.sh
-     ./redis.sh
-     ./mysql.sh
-     ./php.sh
-     ./phpmyadmin.sh
-  SHELL
+  # Run Ansible from the Vagrant Guest
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "site.yml"
+  end
 end
