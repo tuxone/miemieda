@@ -2,6 +2,7 @@
   become: true
   vars:
     mysql_root_pass: vagrant
+    phpmyadmin_pass: vagrant
   tasks:
   - name: Update repository
     apt:
@@ -43,9 +44,9 @@
   # NOTE: the password problem
   # https://coderwall.com/p/sqdaya/mysql-server-installation-with-custom-password-in-ansible--2
   - name: Set MySQL root password before installing
-    debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_root_pass | quote}}' vtype='password'
+    debconf: name='mysql-server' question='mysql-server/root_password' value='{{ mysql_root_pass }}' vtype='password'
   - name: Confirm MySQL root password before installing
-    debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_pass | quote}}' vtype='password'
+    debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{ mysql_root_pass }}' vtype='password'
   - name: Install MySQL
     apt: name={{ item }} state=present
     with_items:
@@ -55,6 +56,7 @@
     apt: name={{ item }} state=present
     # NOTE: need to specify php 7.1
     # NOTE: cli and other packages are installed as dependencies
+    # TODO: enable error report
     with_items:
       - php7.1-fpm
       - php7.1-mcrypt
@@ -66,6 +68,26 @@
       - php7.1-intl
       - php7.1-mysql
       - php7.1-sqlite3
+      - php7.1-xml
+      - php7.1-mbstring
+  - name: Set phpmyadmin webserver
+    # TODO: how to skip this
+    debconf: name='phpmyadmin' question='phpmyadmin/reconfigure-webserver' value='apache2' vtype='multiselect'
+  - name: Set phpmyadmin dbconfig
+    debconf: name='phpmyadmin' question='phpmyadmin/dbconfig-install' value='true' vtype='boolean'
+  - name: Set phpmyadmin mysql admin user
+    debconf: name='phpmyadmin' question='phpmyadmin/mysql/admin-user' value='root' vtype='string'
+  - name: Set phpmyadmin mysql admin user password
+    debconf: name='phpmyadmin' question='phpmyadmin/mysql/admin-pass' value='{{ mysql_root_pass }}' vtype='password'
+  - name: Set phpmyadmin admin user password
+    debconf: name='phpmyadmin' question='phpmyadmin/mysql/app-pass' value='{{ phpmyadmin_pass }}' vtype='password'
+  - name: Set phpmyadmin admin user password confirm
+    debconf: name='phpmyadmin' question='phpmyadmin/app-password-confirm' value='{{ phpmyadmin_pass }}' vtype='password'
+  - name: Install phpmyadmin
+    apt:
+      name: phpmyadmin
+  # TODO: copy config and restart server
+  # TODO: edit config
   # End of Installation
 
   # tasks:
