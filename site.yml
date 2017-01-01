@@ -4,6 +4,7 @@
     mysql_root_pass: vagrant
     phpmyadmin_pass: vagrant
     phpmyadmin_host: mysql.lk
+    nvm_user: vagrant
   handlers:
   - name: restart nginx
     service: name=nginx state=restarted enabled=yes
@@ -101,6 +102,24 @@
       group: root
       # TODO: file mode
     notify: restart nginx
+  - name: Install nvm for user vagrant
+    become_user: "{{ nvm_user }}"
+    git: repo=https://github.com/creationix/nvm.git dest=~/.nvm
+  - name: Export NVM_DIR
+    become_user: "{{ nvm_user }}"
+    lineinfile:
+      dest: ~/.bashrc
+      line: "export NVM_DIR=$HOME/.nvm"
+      create: yes
+  - name: Add nvm.sh to bashrc
+    become_user: "{{ nvm_user }}"
+    lineinfile:
+      dest: ~/.bashrc
+      line: "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"  # This loads nvm"
+      create: yes
+  - name: Install latest node LTS
+    become_user: "{{ nvm_user }}"
+    command: bash -c '. ~/.nvm/nvm.sh; nvm install lts/*; nvm alias default lts/*'
   # End of Installation
 
   # tasks:
