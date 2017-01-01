@@ -3,6 +3,10 @@
   vars:
     mysql_root_pass: vagrant
     phpmyadmin_pass: vagrant
+    phpmyadmin_host: mysql.lk
+  handlers:
+  - name: restart nginx
+    service: name=nginx state=restarted enabled=yes
   tasks:
   - name: Update repository
     apt:
@@ -54,8 +58,6 @@
       - mysql-client
   - name: Install PHP7
     apt: name={{ item }} state=present
-    # NOTE: need to specify php 7.1
-    # NOTE: cli and other packages are installed as dependencies
     # TODO: enable error report
     with_items:
       - php7.1-fpm
@@ -86,8 +88,19 @@
   - name: Install phpmyadmin
     apt:
       name: phpmyadmin
-  # TODO: copy config and restart server
-  # TODO: edit config
+  - name: Update hosts for phpmyadmin
+    lineinfile:
+      dest: /etc/hosts
+      # NOTE: must use double quote https://github.com/ansible/ansible/issues/4818
+      line: "127.0.0.1\t{{ phpmyadmin_host }}"
+  - name: Copy nginx config for phpmyadmin
+    template:
+      src: /vagrant/templates/phpmyadmin.j2
+      dest: /etc/nginx/conf.d/phpmyadmin.conf
+      owner: root
+      group: root
+      # TODO: file mode
+    notify: restart nginx
   # End of Installation
 
   # tasks:
