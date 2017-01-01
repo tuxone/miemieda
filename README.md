@@ -43,6 +43,8 @@ Deprecated, this repo will be moved to https://github.com/dyweb, the box on Atla
 ## Acknowledgement
 
 - https://github.com/LukeXuan/atlas-centos7
+- https://github.com/leonidas/ansible-nvm
+- https://github.com/arbabnazar/ansible-roles/tree/master/LEMP
 
 ## License
 
