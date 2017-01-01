@@ -119,6 +119,7 @@
       create: yes
   - name: Install latest node LTS
     become_user: "{{ nvm_user }}"
+    # Thanks to https://truongtx.me/2015/11/02/ansible-install-and-work-with-nodejs-using-nvm
     command: bash -c '. ~/.nvm/nvm.sh; nvm install lts/*; nvm alias default lts/*'
   # End of Installation
 
