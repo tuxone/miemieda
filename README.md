@@ -14,7 +14,7 @@ The [feature/php7](https://github.com/at15/lnmp/tree/feature/php7) branch is als
 - MySQL 5.7
 - PHP 7.1 `ppa:ondrej/php`
 - Redis 3.07 `ppa:chris-lea/redis-server`
-- Phpmyadmin 4.5.4.1 (nginx config in `/etc/nginx/conf.d/phpmyadmin.conf`)
+- Phpmyadmin 4.5.4.1 (nginx config is `/etc/nginx/conf.d/phpmyadmin.conf`)
 
 ## Requirement
 
@@ -29,8 +29,41 @@ need to update TODO: the issue for brew cask installed vbox)
 
 Deprecated, this repo will be moved to https://github.com/dyweb, the box on Atlas will also change.
 
-- `vagrant init at15/lnmp7`
-- `vagrant up --provider virtualbox`
+Use the following Vagrantfile, and run `vagrant up --provider virtualbox`
+
+- edit your host machine's `hosts` file, add `127.0.0.1    mysql.lk`, and use `mysql.lk:8080` to visit phpmyadmin
+- use `localhost:8080` to visit nginx welcome page
+
+````ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  # The pre built box is on https://atlas.hashicorp.com/at15/boxes/lnmp7/
+  config.vm.box = "at15/lnmp7"
+
+  # If the base box updated, you can't update your current vm without destroy it
+  config.vm.box_check_update = true
+
+  # Forward guest 80 to host 8080
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Use 777 for the default mount folder. which works for Ubuntu and Mac, windows always got 777
+  config.vm.synced_folder ".", "/vagrant", \
+    :disabled => false, \
+    :mount_options  => ['dmode=777,fmode=777']
+
+  config.vm.provider "virtualbox" do |vb|
+     # Don't show the GUI unless you have some bug
+     vb.gui = false
+     # Customize the amount of memory on the VM:
+     vb.memory = "1024"
+     # Config the name
+     vb.name = "lnmp7"
+  end
+end
+````
 
 ### Use this repo directly
 

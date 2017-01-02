@@ -46,6 +46,7 @@
   - name: Install redis
     apt:
       name: redis-server
+
   # NOTE: the password problem
   # https://coderwall.com/p/sqdaya/mysql-server-installation-with-custom-password-in-ansible--2
   - name: Set MySQL root password before installing
@@ -57,6 +58,7 @@
     with_items:
       - mysql-server
       - mysql-client
+
   - name: Install PHP7
     apt: name={{ item }} state=present
     # TODO: enable error report
@@ -73,6 +75,16 @@
       - php7.1-sqlite3
       - php7.1-xml
       - php7.1-mbstring
+  - name: Check if composer is installed
+    # http://stackoverflow.com/questions/21892603/how-to-make-ansible-execute-a-shell-script-if-a-package-is-not-installed
+    command: bash -c 'which composer'
+    register: composer_check
+    failed_when: False
+  - name: Install composer
+    become_user: root
+    command: bash -c 'curl -sS https://getcomposer.org/installer | php && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer'
+    when: composer_check.stdout.find('composer') == -1
+
   - name: Set phpmyadmin webserver
     # TODO: how to skip this
     debconf: name='phpmyadmin' question='phpmyadmin/reconfigure-webserver' value='apache2' vtype='multiselect'
@@ -102,6 +114,7 @@
       group: root
       # TODO: file mode
     notify: restart nginx
+
   - name: Install nvm for user vagrant
     become_user: "{{ nvm_user }}"
     git: repo=https://github.com/creationix/nvm.git dest=~/.nvm
@@ -117,22 +130,16 @@
       dest: ~/.bashrc
       line: "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"  # This loads nvm"
       create: yes
+  - name: Check if node is installed
+    become_user: "{{ nvm_user }}"
+    command: bash -c 'which node'
+    register: node_check
+    failed_when: False
   - name: Install latest node LTS
     become_user: "{{ nvm_user }}"
     # Thanks to https://truongtx.me/2015/11/02/ansible-install-and-work-with-nodejs-using-nvm
     command: bash -c '. ~/.nvm/nvm.sh; nvm install lts/*; nvm alias default lts/*'
-  - name: Check if composer is installed
-    # http://stackoverflow.com/questions/21892603/how-to-make-ansible-execute-a-shell-script-if-a-package-is-not-installed
-    command: bash -c 'which composer'
-    register: composer_check
-    failed_when: False
-  - name: Install composer
-    become_user: root
-    command: bash -c 'curl -sS https://getcomposer.org/installer | php && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer'
-    when: composer_check.stdout.find('composer') == -1
-  # End of Installation
+    # FIXME: the check is not working, it still change every time run provision
+    when: node_check.stdout.find('node') == -1
 
-  # tasks:
-  # - name: run this command and ignore the result
-  #   shell: /usr/bin/somecommand
-  #   ignore_errors: True
+  # End of Installation
