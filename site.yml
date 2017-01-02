@@ -121,6 +121,15 @@
     become_user: "{{ nvm_user }}"
     # Thanks to https://truongtx.me/2015/11/02/ansible-install-and-work-with-nodejs-using-nvm
     command: bash -c '. ~/.nvm/nvm.sh; nvm install lts/*; nvm alias default lts/*'
+  - name: Check if composer is installed
+    # http://stackoverflow.com/questions/21892603/how-to-make-ansible-execute-a-shell-script-if-a-package-is-not-installed
+    command: bash -c 'which composer'
+    register: composer_check
+    failed_when: False
+  - name: Install composer
+    become_user: root
+    command: bash -c 'curl -sS https://getcomposer.org/installer | php && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer'
+    when: composer_check.stdout.find('composer') == -1
   # End of Installation
 
   # tasks:
