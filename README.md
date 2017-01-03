@@ -13,6 +13,7 @@ The [feature/php7](https://github.com/at15/lnmp/tree/feature/php7) branch is als
 - Nginx 1.10.1 `ppa:nginx/stable`
 - MySQL 5.7
 - PHP 7.1 `ppa:ondrej/php`
+- Composer `/usr/local/bin/composer`
 - Redis 3.07 `ppa:chris-lea/redis-server`
 - Phpmyadmin 4.5.4.1 (nginx config is `/etc/nginx/conf.d/phpmyadmin.conf`)
 
@@ -33,6 +34,22 @@ Use the following Vagrantfile, and run `vagrant up --provider virtualbox`
 
 - edit your host machine's `hosts` file, add `127.0.0.1    mysql.lk`, and use `mysql.lk:8080` to visit phpmyadmin
 - use `localhost:8080` to visit nginx welcome page
+
+If you have a bad network, you can run the provison multiple times, it has side effects, but won't break your
+PHP projects.
+
+- `vagrant up --provison` works when your vm is stop or running
+- `vagrant reload --provision` would restart the vm and run the provision when start
+
+As for package management tools, you will have problem running `npm` inside the box
+when your using windows host due to symbolic link.
+
+- npm can be solved using `pm install --no-bin-links` see https://github.com/npm/npm/issues/5874
+- composer may have similar problem
+
+For windows users, I suggest running `git` and `npm` in your git bash or cmd instead of inside the vm.
+Since most PHP projects use node for building assets instead of application server, running instead vm
+is not a must.
 
 ````ruby
 # -*- mode: ruby -*-
@@ -65,7 +82,7 @@ Vagrant.configure(2) do |config|
 end
 ````
 
-### Use this repo directly
+### Build the box
 
 - `git clone git@github.com:at15/lnmp.git`
 - `cd lnmp`
