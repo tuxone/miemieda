@@ -44,7 +44,7 @@ PHP projects.
 As for package management tools, you will have problem running `npm` inside the box
 when your using windows host due to symbolic link.
 
-- npm can be solved using `pm install --no-bin-links` see https://github.com/npm/npm/issues/5874
+- npm can be solved using `npm install --no-bin-links` see https://github.com/npm/npm/issues/5874
 - composer may have similar problem
 
 For windows users, I suggest running `git` and `npm` in your git bash or cmd instead of inside the vm.
