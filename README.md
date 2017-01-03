@@ -1,11 +1,13 @@
-# lnmp
+# Miemieda
 Vagrant box for PHP projects
 
-For PHP5.X see [legacy/ubuntu-14.04-PHP5](https://github.com/at15/lnmp/tree/legacy/ubuntu-14.04-PHP5) branch.
-The [feature/php7](https://github.com/at15/lnmp/tree/feature/php7) branch is also deprecated, PHP7 is now in the master branch.
+For PHP5.X see [legacy/ubuntu-14.04-PHP5](https://github.com/dyweb/miemieda/tree/legacy/ubuntu-14.04-PHP5) branch.
+The [feature/php7](https://github.com/dyweb/miemieda/tree/feature/php7) branch is also deprecated, PHP7 is now in the master branch.
 
 - [Vagrant Cloud PHP7.x](https://atlas.hashicorp.com/at15/boxes/lnmp7/)
 - [Vagrant Cloud PHP5.x](https://atlas.hashicorp.com/at15/boxes/lnmp/)
+
+For legacy versions, please refer to [at15/lnmp](https://github.com/at15/lnmp) repository.
 
 ## Include
 
@@ -16,6 +18,7 @@ The [feature/php7](https://github.com/at15/lnmp/tree/feature/php7) branch is als
 - Composer `/usr/local/bin/composer`
 - Redis 3.07 `ppa:chris-lea/redis-server`
 - Phpmyadmin 4.5.4.1 (nginx config is `/etc/nginx/conf.d/phpmyadmin.conf`)
+- Node.js 6.x LTS (nvm)
 
 ## Requirement
 
