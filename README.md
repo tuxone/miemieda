@@ -4,6 +4,10 @@ Vagrant box for PHP projects
 For PHP5.X see [legacy/ubuntu-14.04-PHP5](https://github.com/dyweb/miemieda/tree/legacy/ubuntu-14.04-PHP5) branch.
 The [feature/php7](https://github.com/dyweb/miemieda/tree/feature/php7) branch is also deprecated, PHP7 is now in the master branch.
 
+- [Vagrant Cloud](https://atlas.hashicorp.com/dyweb/boxes/miemieda)
+
+## Legacy Releases
+
 - [Vagrant Cloud PHP7.x](https://atlas.hashicorp.com/at15/boxes/lnmp7/)
 - [Vagrant Cloud PHP5.x](https://atlas.hashicorp.com/at15/boxes/lnmp/)
 
@@ -29,13 +33,11 @@ need to update TODO: the issue for brew cask installed vbox)
 
 ## Usage
 
-### Use the pre-built box
-
-Deprecated, this repo will be moved to https://github.com/dyweb, the box on Atlas will also change.
+### Use the pre-built box (Recommended)
 
 Use the following Vagrantfile, and run `vagrant up --provider virtualbox`
 
-- edit your host machine's `hosts` file, add `127.0.0.1    mysql.lk`, and use `mysql.lk:8080` to visit phpmyadmin
+- edit your host machine's `hosts` file, add `192.168.10.80    mysql.lk`, and use `mysql.lk` to visit phpmyadmin
 - use `localhost:8080` to visit nginx welcome page
 
 If you have a bad network, you can run the provison multiple times, it has side effects, but won't break your
@@ -60,11 +62,14 @@ is not a must.
 
 Vagrant.configure(2) do |config|
 
-  # The pre built box is on https://atlas.hashicorp.com/at15/boxes/lnmp7/
-  config.vm.box = "at15/lnmp7"
+  # The pre built box is on https://atlas.hashicorp.com/dyweb/boxes/miemieda/
+  config.vm.box = "dyweb/miemieda"
 
   # If the base box updated, you can't update your current vm without destroy it
   config.vm.box_check_update = true
+
+  # Forward vagrant to private network
+  config.vm.network "private_network", ip: "192.168.10.80"
 
   # Forward guest 80 to host 8080
   config.vm.network "forwarded_port", guest: 80, host: 8080
