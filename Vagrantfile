@@ -21,11 +21,12 @@ Vagrant.configure(2) do |config|
      # Don't show the GUI unless you have some bug
      vb.gui = false
      # Customize the amount of memory on the VM:
-     vb.memory = "1024"
+     vb.memory = "512"
      # Config the name
-     vb.name = "miemieda"
+     vb.name = "regalista"
+     
+     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
-
 
   # Run Ansible from the Vagrant Guest
   config.vm.provision "ansible_local" do |ansible|

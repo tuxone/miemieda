@@ -1,9 +1,7 @@
 - hosts: all
   become: true
   vars:
-    mysql_root_pass: vagrant
-    phpmyadmin_pass: vagrant
-    phpmyadmin_host: mysql.lk
+    mysql_root_pass: root
     nvm_user: vagrant
   handlers:
   - name: restart nginx
@@ -75,6 +73,7 @@
       - php7.1-sqlite3
       - php7.1-xml
       - php7.1-mbstring
+      - php7.1-json
   - name: Check if composer is installed
     # http://stackoverflow.com/questions/21892603/how-to-make-ansible-execute-a-shell-script-if-a-package-is-not-installed
     command: bash -c 'which composer'
@@ -85,34 +84,19 @@
     command: bash -c 'curl -sS https://getcomposer.org/installer | php && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer'
     when: composer_check.stdout.find('composer') == -1
 
-  - name: Set phpmyadmin webserver
-    # TODO: how to skip this
-    debconf: name='phpmyadmin' question='phpmyadmin/reconfigure-webserver' value='apache2' vtype='multiselect'
-  - name: Set phpmyadmin dbconfig
-    debconf: name='phpmyadmin' question='phpmyadmin/dbconfig-install' value='true' vtype='boolean'
-  - name: Set phpmyadmin mysql admin user
-    debconf: name='phpmyadmin' question='phpmyadmin/mysql/admin-user' value='root' vtype='string'
-  - name: Set phpmyadmin mysql admin user password
-    debconf: name='phpmyadmin' question='phpmyadmin/mysql/admin-pass' value='{{ mysql_root_pass }}' vtype='password'
-  - name: Set phpmyadmin admin user password
-    debconf: name='phpmyadmin' question='phpmyadmin/mysql/app-pass' value='{{ phpmyadmin_pass }}' vtype='password'
-  - name: Set phpmyadmin admin user password confirm
-    debconf: name='phpmyadmin' question='phpmyadmin/app-password-confirm' value='{{ phpmyadmin_pass }}' vtype='password'
-  - name: Install phpmyadmin
-    apt:
-      name: phpmyadmin
-  - name: Update hosts for phpmyadmin
-    lineinfile:
-      dest: /etc/hosts
-      # NOTE: must use double quote https://github.com/ansible/ansible/issues/4818
-      line: "127.0.0.1\t{{ phpmyadmin_host }}"
-  - name: Copy nginx config for phpmyadmin
+  - name: Clean nginx default vhost
+    file:
+      state: absent
+      path: "/etc/nginx/sites-enabled/default"
+    notify: restart nginx
+  - name: Copy nginx config for symfony
     template:
-      src: /vagrant/templates/phpmyadmin.j2
-      dest: /etc/nginx/conf.d/phpmyadmin.conf
+      src: /vagrant/templates/symfony.j2
+      dest: /etc/nginx/sites-available/symfony.conf
       owner: root
       group: root
-      # TODO: file mode
+  - name: Create symlink
+    file: src=/etc/nginx/sites-available/symfony.conf dest=/etc/nginx/sites-enabled/symfony.conf state=link
     notify: restart nginx
 
   - name: Install nvm for user vagrant
